@@ -5,6 +5,8 @@ This module provides functionality to interact with the Perplexity AI API for re
 relevant research URLs. It handles API communication, URL extraction, and error handling
 for research-related queries.
 
+References used from existing streamlit repositories and projects available online
+
 Classes:
    PerplexityClient: Handles communication with Perplexity AI API
 """

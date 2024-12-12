@@ -11,8 +11,9 @@ The application follows these main steps:
 3. Generate structured research article
 4. Present results with interactive interface
 
-Author: Your Name
-Version: 1.0.0
+References used from existing streamlit repositories and projects available online
+
+Author: Srivattsan Gopalakrishnan
 """
 
 import streamlit as st
@@ -29,7 +30,8 @@ from src.config import OPENAI_API_KEY, PPLX_API_KEY
 from utils.logger import logger
 import os
 
-os.environ["TOKENIZERS_PARALLELISM"] = "false"
+# This is to avoid deadlocks while creation of batch embeddings from huggingface sentence transformers
+os.environ["TOKENIZERS_PARALLELISM"] = "false" 
 
 def initialize_clients() -> Tuple[OpenAI, PerplexityClient]:
    """

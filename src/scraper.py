@@ -4,6 +4,8 @@ Web Scraping Module
 This module provides web scraping functionality for extracting content from web pages.
 It handles various webpage structures, content extraction, and error recovery.
 
+References used from existing streamlit repositories and projects available online
+
 Classes:
    WebScraper: Manages web scraping operations with retry logic and content cleaning
 """

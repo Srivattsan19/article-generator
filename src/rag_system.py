@@ -5,6 +5,8 @@ This module implements a RAG system for generating research articles by combinin
 local embeddings using Sentence Transformers and text generation using OpenAI's GPT.
 It handles content chunking, embedding generation, similarity search, and section generation.
 
+References used from existing streamlit repositories and projects available online
+
 Example:
    rag = RAGSystem(openai_client, citation_manager)
    rag.add_content("Research content", "Source1", {"title": "Paper1"})

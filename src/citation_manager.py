@@ -4,6 +4,7 @@ Citation Manager Module
 This module manages citations and references for research articles, providing functionality
 to add citations and generate formatted reference sections. It supports various citation
 formats and handles different types of source materials.
+References used from existing streamlit repositories and projects available online
 
 Example:
    manager = CitationManager()

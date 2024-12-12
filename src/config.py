@@ -30,7 +30,6 @@ MAX_RETRIES = 3   # Maximum number of retry attempts for API calls
 RETRY_DELAY = 1   # Delay between retry attempts in seconds
 
 # Model Configurations
-EMBEDDING_MODEL = "text-embedding-3-small"  # OpenAI's embedding model
 GPT_MODEL = "gpt-4"                        # OpenAI's GPT model for text generation
 PPLX_MODEL = "llama-3.1-sonar-huge-128k-online"  # Perplexity's model for research
 

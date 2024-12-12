@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+#References used from existing streamlit repositories and projects available online
 def setup_logger():
     """Configure and return a logger instance"""
     logging.basicConfig(
