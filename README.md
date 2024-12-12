@@ -1,141 +1,201 @@
-<<<<<<< HEAD
-# article-generator
-=======
-### Project Documentation: Retrieval-Augmented Generation (RAG) System for Article Generation
+# Article Generator
 
----
+A Retrieval-Augmented Generation (RAG) system that generates well-researched articles by combining web content retrieval, semantic search, and GPT-based text generation. The system automatically retrieves relevant sources, processes web content, and generates structured academic articles with proper citations.
 
-## **Project Description**
+## Table of Contents
+- [Quick Start](#quick-start)
+- [Project Overview](#project-overview)
+- [Technical Architecture](#technical-architecture)
+- [Implementation Details](#implementation-details)
+- [Usage Guide](#usage-guide)
+- [Troubleshooting](#troubleshooting)
 
-The RAG (Retrieval-Augmented Generation) system is designed to assist users in generating well-researched articles on various educational topics. It integrates retrieval, embedding, and generation steps to create high-quality content. The system operates as a Streamlit application and follows these key steps:
+## Quick Start
 
-1. **Retrieval:** The Perplexity API is used to fetch relevant links to educational documents and articles.
-2. **Scraping:** BeautifulSoup scrapes the retrieved links to extract textual content.
-3. **Embedding:** Hugging Face Sentence Transformers embed chunks of 500 words for semantic understanding.
-4. **Relevance Scoring:** Cosine similarity scores are used to rank the relevance of the retrieved content against the user's query.
-5. **Generation:** GPT-4 generates sections of the article based on the most relevant retrieved context.
-6. **Output:** The generated article is presented to the user with an option to download it as a file.
+### Prerequisites
+- Python 3.8 or higher
+- OpenAI API key
+- Perplexity API key
+- Internet connection for web content retrieval
 
----
+### Installation
 
-## **Implementation Choices**
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/article-generator.git
+cd article-generator
+```
 
-### **Programming Language and Framework**
-- **Python**: Chosen for its rich ecosystem of libraries in machine learning, natural language processing, and web development.
-- **Streamlit**: Provides a simple interface for deploying the app as a user-friendly web application.
+2. Create and activate a virtual environment:
+```bash
+# Create virtual environment
+python -m venv venv
 
-### **Generative AI Concepts and Design Decisions**
+# Activate on Windows
+venv\Scripts\activate
 
-- **Retrieval-Augmented Generation**: Combines retrieval-based systems with advanced language generation models, enhancing factual accuracy and context relevance. This architecture allows for dynamic adaptation to user queries by sourcing external information.
-- **GPT-4 for Text Generation**: Leverages OpenAI’s GPT-4 model to produce coherent and contextually appropriate text. GPT-4’s ability to understand nuanced queries ensures high-quality content.
-- **Sentence Embeddings**: Hugging Face Sentence Transformers are used for semantic understanding of large text chunks. These embeddings help identify the most contextually relevant content for article generation.
-- **Cosine Similarity Scoring**: Implements cosine similarity to match user queries with retrieved content effectively. This ensures the generated article is well-grounded in the most pertinent information.
+# Activate on macOS/Linux
+source venv/bin/activate
+```
 
-### **Advantages of Using RAG Over Direct GPT-4 Input**
+3. Install required packages:
+```bash
+pip install -r requirements.txt
+```
 
-1. **Cost Efficiency**: Feeding the entire content directly into GPT-4 would result in a high number of input tokens, drastically increasing API usage costs. By retrieving and embedding only relevant content, the token count is significantly reduced.
-2. **Improved Relevance**: RAG ensures that GPT-4 is exposed to only the most pertinent information, reducing the likelihood of generating irrelevant or hallucinated content.
-3. **Scalability**: The modular design allows for easy integration with other retrieval systems or embedding models, making the system adaptable to diverse domains.
-4. **Dynamic Updates**: The system can quickly adapt to new information by retrieving fresh content in response to user queries.
+4. Create a `.env` file in the root directory:
+```plaintext
+OPENAI_API_KEY=your_openai_api_key_here
+PPLX_API_KEY=your_perplexity_api_key_here
+```
 
-### **Libraries and Tools**
+5. Create required directories:
+```bash
+mkdir logs
+```
 
-- **Retrieval**: 
-  - `requests` for API communication.
-  - `python-dotenv` to manage API keys securely.
-- **Scraping**: 
-  - `beautifulsoup4` and `lxml` for parsing and extracting web content.
-- **Embedding**: 
-  - `sentence-transformers` for generating semantic embeddings.
-  - `torch` for efficient tensor computation.
-- **Similarity Matching**:
-  - `scikit-learn` for calculating cosine similarity between embeddings.
-- **Generation**: 
-  - `openai` library for GPT-4 integration.
-- **Logging**: 
-  - Custom `logger.py` module ensures traceability and debugging support.
+### Running the Application
 
-### **Architecture**
+1. Start the Streamlit app:
+```bash
+streamlit run main.py
+```
 
-The project is organized into the following structure:
+2. Open your web browser and navigate to:
+```
+http://localhost:8501
+```
 
-**Parent Folder: `article-generator`**
-- **Core Components**:
-  - `main.py`: Entry point of the application.
-  - `requirements.txt`: Lists all dependencies required to run the project.
-  - `README.md`: Provides a quick start guide and overview of the system.
-- **Source Code (`src`):**
-  - `citation_manager.py`: Manages citations for extracted information.
-  - `config.py`: Contains configuration settings such as API keys and default parameters.
-  - `perplexity_client.py`: Handles interactions with the Perplexity API.
-  - `rag_system.py`: Implements the RAG pipeline.
-  - `scraper.py`: Extracts textual data from retrieved links.
-- **Utility Code (`utils`):**
-  - `logger.py`: Implements custom logging functionality.
-- **Other Directories:**
-  - `logs`: Stores application logs for monitoring and debugging.
+## Project Overview
 
----
+The RAG system generates research articles through the following steps:
 
-## **Explanation of Components**
+1. **Content Retrieval**: Uses Perplexity API to find relevant sources
+2. **Web Scraping**: Extracts content from retrieved URLs
+3. **Embedding Generation**: Creates semantic embeddings using Sentence Transformers
+4. **Content Selection**: Ranks content relevance using cosine similarity
+5. **Article Generation**: Produces structured content using GPT-4
+6. **Citation Management**: Maintains source attribution and references
 
-### **`main.py`**
-This is the entry point for the Streamlit application. It:
-- Captures user input (e.g., article topic).
-- Coordinates the workflow by calling relevant modules from `src`.
-- Displays the final article and download option.
+## Technical Architecture
 
-### **`requirements.txt`**
-Contains all required Python libraries, ensuring consistent environment setup.
+### Project Structure
+```
+article-generator/
+├── main.py                 # Application entry point
+├── requirements.txt        # Project dependencies
+├── .env                    # API keys and config
+├── src/
+│   ├── __init__.py
+│   ├── citation_manager.py # Citation handling
+│   ├── config.py          # Configuration settings
+│   ├── perplexity_client.py # Perplexity API interface
+│   ├── rag_system.py      # RAG implementation
+│   └── scraper.py         # Web content extraction
+├── utils/
+│   ├── __init__.py
+│   └── logger.py          # Logging configuration
+└── logs/                  # Log files
+```
 
-### **`citation_manager.py`**
-Handles proper attribution and citation of the sources used in the article, ensuring compliance with academic and ethical standards.
+### Key Components
 
-### **`config.py`**
-Manages configuration details such as:
-- API keys.
-- Default parameters for embeddings and similarity calculations.
+- **Web Scraping**: BeautifulSoup4 for content extraction
+- **Embeddings**: Sentence Transformers for semantic understanding
+- **Text Generation**: OpenAI's GPT-4
+- **Interface**: Streamlit web application
 
-### **`perplexity_client.py`**
-Interacts with the Perplexity API to:
-- Search for relevant links based on the user's query.
-- Validate and preprocess the API responses for downstream tasks.
+## Implementation Details
 
-### **`rag_system.py`**
-Implements the core RAG workflow:
-1. Retrieves and preprocesses the data.
-2. Embeds and ranks the content.
-3. Generates article sections using GPT-4.
+### Core Technologies
 
-### **`scraper.py`**
-Scrapes the content of URLs retrieved via the Perplexity API to:
-- Extract meaningful text while filtering out irrelevant elements.
+- **RAG Pipeline**:
+  - Combines retrieval and generation for improved accuracy
+  - Uses semantic search for content relevance
+  - Maintains source attribution
 
-### **`logger.py`**
-Provides robust logging capabilities to:
-- Track the execution flow.
-- Record errors and debug information.
+- **Embedding System**:
+  - Local embedding generation using Sentence Transformers
+  - Efficient similarity matching
+  - Chunked text processing
 
----
+- **Content Generation**:
+  - Structured article sections
+  - Citation integration
+  - Academic formatting
 
-## **Spaces for Screenshots**
+## Usage Guide
 
-### **User Interface Overview**
-(Screenshot here showing the Streamlit interface for topic input and article display.)
+1. **Enter Research Topic**:
+   - Type your topic in the input field
+   - Click "Generate Article"
 
-### **Retrieval Process**
-(Screenshot here displaying API call logs or a sample response from Perplexity.)
+2. **Generation Process**:
+   - URL collection (Progress: 0-33%)
+   - Content processing (Progress: 33-66%)
+   - Article generation (Progress: 66-100%)
 
-### **Embedding and Similarity Matching**
-(Screenshot here illustrating the cosine similarity scores.)
+3. **Output**:
+   - View generated article sections
+   - Check references and sources
+   - Download article in Markdown format
 
-### **Generated Article Output**
-(Screenshot here showing the final generated article with the download button.)
+## Troubleshooting
 
----
+### Common Issues
 
-## **Conclusion**
+1. **API Key Errors**:
+   - Verify keys in `.env` file
+   - Check API subscription status
+   - Ensure proper key format
 
-This RAG-based article generator exemplifies the seamless integration of retrieval and generation capabilities to enhance educational content creation. By leveraging advanced generative AI concepts such as retrieval-augmented generation and sentence embeddings, the system ensures the delivery of high-quality and contextually accurate articles. The use of RAG significantly reduces operational costs, improves relevance, and ensures scalability compared to directly inputting large amounts of raw content into GPT-4. The modular architecture ensures scalability and ease of future enhancements, such as support for additional APIs or advanced generation techniques.
+2. **Connection Issues**:
+   - Check internet connectivity
+   - Verify proxy settings if applicable
+   - Ensure API endpoints are accessible
 
->>>>>>> 4d9e7df (Initial commit: Add RAG-based article generator)
+3. **Generation Failures**:
+   - Check log files in `logs` directory
+   - Verify sufficient API credits
+   - Ensure topic is well-defined
+
+### Error Messages
+
+- "Missing API keys": Check `.env` file configuration
+- "No URLs found": Try reformulating your topic
+- "Failed to process URL": Check website accessibility
+
+## Performance Optimization
+
+- Uses batch processing for embeddings
+- Implements caching where appropriate
+- Optimizes chunk sizes for processing
+
+## Limitations
+
+- Requires active internet connection
+- Subject to API rate limits
+- Processing time varies with content volume
+
+## Support
+
+For issues and questions:
+1. Check the logs directory
+2. Open an issue on GitHub
+3. Contact project maintainers
+
+## License
+
+MIT License - see LICENSE file for details
+
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch
+3. Submit a pull request
+
+## Acknowledgments
+
+- OpenAI for GPT-4 API
+- Perplexity AI for research capabilities
+- Hugging Face for Sentence Transformers
